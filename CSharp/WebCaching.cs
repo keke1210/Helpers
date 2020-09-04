@@ -3,20 +3,21 @@ using System.Web;
 
 /**
 * Example Usage:
+* When you need know new cars are entered every week so you update cache every 7 days
 * 
-* var testData = CacheHelper.GetSetObjectFromCache(key + id, 2 * 24, () => context.Cars.GetAll(id));
+* var testData = CacheHelper.GetSetObjectFromCache(key + id, 7 * 24, () => context.Cars.GetAll(id));
 * 
 */
 public static class CacheHelper
 {
-    public static void SaveTocache(string cacheKey, object savedItem)
+    public static void SaveTocache(string cacheKey, int cacheTimeInHours, object savedItem)
     {
         if (IsIncache(cacheKey))
         {
             HttpContext.Current.Cache.Remove(cacheKey);
         }
 
-        HttpContext.Current.Cache.Add(cacheKey, savedItem, null, DateTime.Now.AddDays(1), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, null);
+        HttpContext.Current.Cache.Add(cacheKey, savedItem, null, DateTime.Now.AddHours(cacheTimeInHours), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, null);
     }
 
     public static T GetSetObjectFromCache<T>(string cacheKey, int cacheTimeInHours, Func<T> objectSettingFunction) where T : class
