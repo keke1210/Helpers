@@ -4,7 +4,7 @@ using System.Web;
 /**
 * Example Usage:
 * 
-* var testData = CacheHelper.GetSetObjectFromCache(key, 2 * 24, () => context.Cars.GetAll());
+* var testData = CacheHelper.GetSetObjectFromCache(key + id, 2 * 24, () => context.Cars.GetAll(id));
 * 
 */
 public static class CacheHelper
