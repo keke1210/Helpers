@@ -1,0 +1,4 @@
+Check If the branch is pushed remotely with : 'git ls-remote origin'
+You can use grep to search for a specific branch like : 'git ls-remote origin grep <NameOfBranch>'
+
+Then you try and give the command : 'git fetch'
