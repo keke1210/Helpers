@@ -12,14 +12,14 @@ public static class ValidationExtensions
     /// </summary>
     /// <param name="guid"></param>
     /// <returns></returns>
-    public static bool IsEmptyOrNullGuid(this Guid guid) => guid != null && guid != Guid.Empty;
+    public static bool IsEmptyGuidOrNull(this Guid guid) => guid != null && guid != Guid.Empty;
 
     /// <summary>
     /// Checks if string can be parsed to guid and is valid
     /// </summary>
     /// <param name="guidStr"></param>
     /// <returns></returns>
-    public static bool IsStringEmptyOrNullGuid(this string guidStr) 
+    public static bool IsStringEmptyGuidOrNull(this string guidStr) 
     {
         var guidValue = new Guid(guidStr);
         return !guidStr.IsEmpty() && guidValue != Guid.Empty;
