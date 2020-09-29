@@ -12,7 +12,32 @@ public static class ValidationExtensions
     /// </summary>
     /// <param name="guid"></param>
     /// <returns></returns>
-    public static bool IsValidGuid(this Guid guid) => guid != null && guid != Guid.Empty;
+    public static bool IsEmptyOrNullGuid(this Guid guid) => guid != null && guid != Guid.Empty;
+
+    /// <summary>
+    /// Checks if string can be parsed to guid and is valid
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <returns></returns>
+    public static bool IsStringEmptyOrNullGuid(this string guidStr) 
+    {
+        var guidValue = new Guid(guidStr);
+        return !guidStr.IsEmpty() && guidValue != Guid.Empty;
+    }
+
+    /// <summary>
+    /// Better way to check if the given guid is valid, only .NET Core
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <returns></returns>
+    public static bool IsValidGuid(this Guid guid) => Guid.TryParse(guid.ToString(), out Guid _);
+
+    /// <summary>
+    /// Better way to check if the given string can be parsed to Guid, only .NET Core
+    /// </summary>
+    /// <param name="guidStr"></param>
+    /// <returns></returns>
+    public static bool IsStringValidGuid(this string guidStr) => Guid.TryParse(guidStr, out Guid _);
 
     /// <summary>
     /// Checks if filename is valid
