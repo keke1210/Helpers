@@ -10,7 +10,7 @@ public static class ValidationExtensions
     /// <typeparam name="T">Collection</typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public static bool IsEmpty<T>(this T collection) where T : IEnumerable, ICollection, IList
+    public static bool IsEmpty<T>(this T collection) where T : ICollection
 		=> collection.Count == 0;
 
     /// <summary>
