@@ -17,7 +17,7 @@ public static class ValidationExtensions
     /// <summary>
     /// Checks if string can be parsed to guid and is valid
     /// </summary>
-    /// <param name="guid"></param>
+    /// <param name="guidStr"></param>
     /// <returns></returns>
     public static bool IsStringEmptyOrNullGuid(this string guidStr) 
     {
