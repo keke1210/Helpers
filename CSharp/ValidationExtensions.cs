@@ -37,31 +37,24 @@ public static class ValidationExtensions
     /// </summary>
     /// <param name="str">string input</param>
     /// <returns>boolean value if string is empty or not</returns>
-<<<<<<< HEAD
-    public static bool IsEmpty(this string str)
+    public static bool IsEmptyWhitespaceOrNull(this string str)
                         => string.IsNullOrWhiteSpace(str) || string.Empty == str;
-=======
-    public static bool IsEmptyWhitespaceOrNull(this string str) => string.IsNullOrWhiteSpace(str) || string.Empty == str;
->>>>>>> 1690acb1fd7a84c1e0df13363502ef27a6e4c4dc
 
     /// <summary>
     /// Better way to check if the given guid is valid, only .NET Core
     /// </summary>
     /// <param name="guid"></param>
     /// <returns></returns>
-<<<<<<< HEAD
     public static bool IsValidGuid(this Guid guid)
-                        => guid != null && guid != Guid.Empty;
-=======
-    public static bool IsValidGuid(this Guid guid) => Guid.TryParse(guid.ToString(), out Guid _);
+                        => Guid.TryParse(guid.ToString(), out Guid _);
 
     /// <summary>
     /// Better way to check if the given string can be parsed to Guid, only .NET Core
     /// </summary>
     /// <param name="guidStr"></param>
     /// <returns></returns>
-    public static bool IsStringValidGuid(this string guidStr) => Guid.TryParse(guidStr, out Guid _);
->>>>>>> 1690acb1fd7a84c1e0df13363502ef27a6e4c4dc
+    public static bool IsStringValidGuid(this string guidStr)
+                        => Guid.TryParse(guidStr, out Guid _);
 
     /// <summary>
     /// Checks if filename is valid
