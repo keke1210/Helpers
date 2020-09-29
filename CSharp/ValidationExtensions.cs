@@ -44,7 +44,6 @@ public static class ValidationExtensions
     }
 
 
-    #region EmailRegex
     /// <summary>
     /// Checks if input is a valid email adress format
     /// </summary>
@@ -54,6 +53,18 @@ public static class ValidationExtensions
     {
         if (email.IsEmpty())
             return false;
+
+        // Examines the domain part of the email and normalizes it.
+        string DomainMapper(Match match)
+        {
+            // Use IdnMapping class to convert Unicode domain names.
+            var idn = new IdnMapping();
+
+            // Pull out and process domain name (throws ArgumentException on invalid)
+            var domainName = idn.GetAscii(match.Groups[2].Value);
+
+            return match.Groups[1].Value + domainName;
+        }
 
         try
         {
@@ -90,23 +101,6 @@ public static class ValidationExtensions
             return false;
         }
     }
-
-    /// <summary>
-    /// Examines the domain part of the email and normalizes it.
-    /// </summary>
-    /// <param name="match"></param>
-    /// <returns></returns>
-    private static string DomainMapper(Match match)
-    {
-        // Use IdnMapping class to convert Unicode domain names.
-        var idn = new IdnMapping();
-
-        // Pull out and process domain name (throws ArgumentException on invalid)
-        var domainName = idn.GetAscii(match.Groups[2].Value);
-
-        return match.Groups[1].Value + domainName;
-    }
-    #endregion
 
     /// <summary>
     /// Checks if the input is a valid Albanian NID/NUIS
