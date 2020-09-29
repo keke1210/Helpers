@@ -1,11 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
+
 public static class ValidationExtensions
 {
-    /// <summary>
-    /// Returs true if string is whitespace, null or empty
+   
+     /// <summary>
+    ///  Generic method that returns true if the collection is empty, otherwise false
     /// </summary>
-    /// <param name="str">string input</param>
-    /// <returns>boolean value if string is empty or not</returns>
-    public static bool IsEmpty(this string str) => string.IsNullOrWhiteSpace(str) || string.Empty == str;
+    /// <typeparam name="T">Collection</typeparam>
+    /// <param name="collection"></param>
+    /// <returns></returns>
+    public static bool IsEmpty<T>(this T collection) where T : IEnumerable, ICollection, IList
+		=> collection.Count == 0;
 
     /// <summary>
     /// Checks if guid is valid
@@ -22,8 +28,15 @@ public static class ValidationExtensions
     public static bool IsStringEmptyGuidOrNull(this string guidStr) 
     {
         var guidValue = new Guid(guidStr);
-        return !guidStr.IsEmpty() && guidValue != Guid.Empty;
+        return !guidStr.IsEmptyWhitespaceOrNull() && guidValue != Guid.Empty;
     }
+
+     /// <summary>
+    /// Returs true if string is whitespace, null or empty
+    /// </summary>
+    /// <param name="str">string input</param>
+    /// <returns>boolean value if string is empty or not</returns>
+    public static bool IsEmptyWhitespaceOrNull(this string str) => string.IsNullOrWhiteSpace(str) || string.Empty == str;
 
     /// <summary>
     /// Better way to check if the given guid is valid, only .NET Core
@@ -46,7 +59,7 @@ public static class ValidationExtensions
     /// <returns></returns>
     public static bool IsValidFilename(this string fileName)
     {
-        if (fileName.IsEmpty()) return false;
+        if (fileName.IsEmptyWhitespaceOrNull()) return false;
 
         string strTheseAreInvalidFileNameChars = new string(System.IO.Path.GetInvalidFileNameChars());
         Regex regInvalidFileName = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
@@ -76,7 +89,7 @@ public static class ValidationExtensions
     /// <returns></returns>
     public static bool IsValidEmail(this string email)
     {
-        if (email.IsEmpty())
+        if (email.IsEmptyWhitespaceOrNull())
             return false;
 
         // Examines the domain part of the email and normalizes it.
@@ -134,7 +147,7 @@ public static class ValidationExtensions
     /// <returns></returns>
     public static bool IsValidNID(this string nid)
     {
-        if (nid.IsEmpty())
+        if (nid.IsEmptyWhitespaceOrNull())
             return false;
 
         if (nid.Length != 10)
