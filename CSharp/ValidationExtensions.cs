@@ -1,20 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+
 public static class ValidationExtensions
 {
+
     /// <summary>
-    /// Returs true if string is whitespace, null or empty
+    ///  Generic method that returns true if the collection is empty, otherwise false
     /// </summary>
-    /// <param name="str">string input</param>
-    /// <returns>boolean value if string is empty or not</returns>
-    public static bool IsEmpty(this string str)
-                        => string.IsNullOrWhiteSpace(str) || string.Empty == str;
+    /// <typeparam name="T">Collection</typeparam>
+    /// <param name="collection"></param>
+    /// <returns></returns>
+    public static bool IsEmpty<T>(this T collection) where T : ICollection
+                        => collection.Count == 0;
 
     /// <summary>
     /// Checks if guid is valid
     /// </summary>
     /// <param name="guid"></param>
     /// <returns></returns>
+    public static bool IsEmptyGuidOrNull(this Guid guid)
+                        => guid != null && guid != Guid.Empty;
+
+    /// <summary>
+    /// Checks if string can be parsed to guid and is valid
+    /// </summary>
+    /// <param name="guidStr"></param>
+    /// <returns></returns>
+    public static bool IsStringEmptyGuidOrNull(this string guidStr)
+    {
+        var guidValue = new Guid(guidStr);
+        return !guidStr.IsEmptyWhitespaceOrNull() && guidValue != Guid.Empty;
+    }
+
+    /// <summary>
+    /// Returs true if string is whitespace, null or empty
+    /// </summary>
+    /// <param name="str">string input</param>
+    /// <returns>boolean value if string is empty or not</returns>
+<<<<<<< HEAD
+    public static bool IsEmpty(this string str)
+                        => string.IsNullOrWhiteSpace(str) || string.Empty == str;
+=======
+    public static bool IsEmptyWhitespaceOrNull(this string str) => string.IsNullOrWhiteSpace(str) || string.Empty == str;
+>>>>>>> 1690acb1fd7a84c1e0df13363502ef27a6e4c4dc
+
+    /// <summary>
+    /// Better way to check if the given guid is valid, only .NET Core
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <returns></returns>
+<<<<<<< HEAD
     public static bool IsValidGuid(this Guid guid)
                         => guid != null && guid != Guid.Empty;
+=======
+    public static bool IsValidGuid(this Guid guid) => Guid.TryParse(guid.ToString(), out Guid _);
+
+    /// <summary>
+    /// Better way to check if the given string can be parsed to Guid, only .NET Core
+    /// </summary>
+    /// <param name="guidStr"></param>
+    /// <returns></returns>
+    public static bool IsStringValidGuid(this string guidStr) => Guid.TryParse(guidStr, out Guid _);
+>>>>>>> 1690acb1fd7a84c1e0df13363502ef27a6e4c4dc
 
     /// <summary>
     /// Checks if filename is valid
@@ -23,7 +70,7 @@ public static class ValidationExtensions
     /// <returns></returns>
     public static bool IsValidFilename(this string fileName)
     {
-        if (fileName.IsEmpty()) return false;
+        if (fileName.IsEmptyWhitespaceOrNull()) return false;
 
         string strTheseAreInvalidFileNameChars = new string(System.IO.Path.GetInvalidFileNameChars());
         Regex regInvalidFileName = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
@@ -46,7 +93,6 @@ public static class ValidationExtensions
     }
 
 
-    #region EmailRegex
     /// <summary>
     /// Checks if input is a valid email adress format
     /// </summary>
@@ -54,8 +100,20 @@ public static class ValidationExtensions
     /// <returns></returns>
     public static bool IsValidEmail(this string email)
     {
-        if (email.IsEmpty())
+        if (email.IsEmptyWhitespaceOrNull())
             return false;
+
+        // Examines the domain part of the email and normalizes it.
+        string DomainMapper(Match match)
+        {
+            // Use IdnMapping class to convert Unicode domain names.
+            var idn = new IdnMapping();
+
+            // Pull out and process domain name (throws ArgumentException on invalid)
+            var domainName = idn.GetAscii(match.Groups[2].Value);
+
+            return match.Groups[1].Value + domainName;
+        }
 
         try
         {
@@ -94,30 +152,13 @@ public static class ValidationExtensions
     }
 
     /// <summary>
-    /// Examines the domain part of the email and normalizes it.
-    /// </summary>
-    /// <param name="match"></param>
-    /// <returns></returns>
-    private static string DomainMapper(Match match)
-    {
-        // Use IdnMapping class to convert Unicode domain names.
-        var idn = new IdnMapping();
-
-        // Pull out and process domain name (throws ArgumentException on invalid)
-        var domainName = idn.GetAscii(match.Groups[2].Value);
-
-        return match.Groups[1].Value + domainName;
-    }
-    #endregion
-
-    /// <summary>
-    /// Checks if the input is a valid Albanian NID/NUIS
+    /// Checks if the input is a valid Albanian NID or NIPT
     /// </summary>
     /// <param name="nid"></param>
     /// <returns></returns>
     public static bool IsValidNID(this string nid)
     {
-        if (nid.IsEmpty())
+        if (nid.IsEmptyWhitespaceOrNull())
             return false;
 
         if (nid.Length != 10)
