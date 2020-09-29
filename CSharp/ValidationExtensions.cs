@@ -103,7 +103,7 @@ public static class ValidationExtensions
     }
 
     /// <summary>
-    /// Checks if the input is a valid Albanian NID/NUIS
+    /// Checks if the input is a valid Albanian NID or NIPT
     /// </summary>
     /// <param name="nid"></param>
     /// <returns></returns>
