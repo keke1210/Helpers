@@ -3,54 +3,58 @@ using System.Collections.Generic;
 
 public static class ValidationExtensions
 {
-   
-     /// <summary>
+
+    /// <summary>
     ///  Generic method that returns true if the collection is empty, otherwise false
     /// </summary>
     /// <typeparam name="T">Collection</typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
     public static bool IsEmpty<T>(this T collection) where T : ICollection
-		=> collection.Count == 0;
+                        => collection.Count == 0;
 
     /// <summary>
     /// Checks if guid is valid
     /// </summary>
     /// <param name="guid"></param>
     /// <returns></returns>
-    public static bool IsEmptyGuidOrNull(this Guid guid) => guid != null && guid != Guid.Empty;
+    public static bool IsEmptyGuidOrNull(this Guid guid)
+                        => guid != null && guid != Guid.Empty;
 
     /// <summary>
     /// Checks if string can be parsed to guid and is valid
     /// </summary>
     /// <param name="guidStr"></param>
     /// <returns></returns>
-    public static bool IsStringEmptyGuidOrNull(this string guidStr) 
+    public static bool IsStringEmptyGuidOrNull(this string guidStr)
     {
         var guidValue = new Guid(guidStr);
         return !guidStr.IsEmptyWhitespaceOrNull() && guidValue != Guid.Empty;
     }
 
-     /// <summary>
+    /// <summary>
     /// Returs true if string is whitespace, null or empty
     /// </summary>
     /// <param name="str">string input</param>
     /// <returns>boolean value if string is empty or not</returns>
-    public static bool IsEmptyWhitespaceOrNull(this string str) => string.IsNullOrWhiteSpace(str) || string.Empty == str;
+    public static bool IsEmptyWhitespaceOrNull(this string str)
+                        => string.IsNullOrWhiteSpace(str) || string.Empty == str;
 
     /// <summary>
     /// Better way to check if the given guid is valid, only .NET Core
     /// </summary>
     /// <param name="guid"></param>
     /// <returns></returns>
-    public static bool IsValidGuid(this Guid guid) => Guid.TryParse(guid.ToString(), out Guid _);
+    public static bool IsValidGuid(this Guid guid)
+                        => Guid.TryParse(guid.ToString(), out Guid _);
 
     /// <summary>
     /// Better way to check if the given string can be parsed to Guid, only .NET Core
     /// </summary>
     /// <param name="guidStr"></param>
     /// <returns></returns>
-    public static bool IsStringValidGuid(this string guidStr) => Guid.TryParse(guidStr, out Guid _);
+    public static bool IsStringValidGuid(this string guidStr)
+                        => Guid.TryParse(guidStr, out Guid _);
 
     /// <summary>
     /// Checks if filename is valid
