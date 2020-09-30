@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 public static class CacheStore
 {
-    private static Dictionary<string, object> _cache;
-    private readonly static object _sync;
+    private static ConcurrentDictionary<string, object> _cache;
 
     /// <summary>
     /// Cache initializer
     /// </summary>
     static CacheStore()
     {
-        _cache = new Dictionary<string, object>();
-        _sync = new object();
+        _cache = new ConcurrentDictionary<string, object>();
     }
 
     /// <summary>
@@ -24,10 +23,7 @@ public static class CacheStore
     public static bool Exists<T>(string key) where T : class
     {
         Type type = typeof(T);
-        lock (_sync)
-        {
-            return _cache.ContainsKey(key + type.FullName);
-        }
+        return _cache.ContainsKey(key + type.FullName);
     }
 
     /// <summary>
@@ -38,10 +34,7 @@ public static class CacheStore
     public static bool Exists<T>() where T : class
     {
         Type type = typeof(T);
-        lock (_sync)
-        {
-            return _cache.ContainsKey(type.FullName);
-        }
+        return _cache.ContainsKey(type.FullName);
     }
 
     /// <summary>
@@ -53,16 +46,10 @@ public static class CacheStore
     {
         Type type = typeof(T);
 
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(type.FullName) == false)
-                return null;
+        if (_cache.ContainsKey(type.FullName) == false)
+            return null;
 
-            lock (_sync)
-            {
-                return (T)_cache[type.FullName];
-            }
-        }
+        return (T)_cache[type.FullName];
     }
 
     /// <summary>
@@ -74,17 +61,11 @@ public static class CacheStore
     public static T Get<T>(string key) where T : class
     {
         Type type = typeof(T);
-
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(key + type.FullName) == false)
-                return null;
-
-            lock (_sync)
-            {
-                return (T)_cache[key + type.FullName];
-            }
-        }
+       
+        if (_cache.ContainsKey(key + type.FullName) == false)
+            return null;
+       
+        return (T)_cache[key + type.FullName];
     }
 
     /// <summary>
@@ -97,16 +78,10 @@ public static class CacheStore
         Type type = typeof(T);
         T value = (T)Activator.CreateInstance(type, constructorParameters);
 
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(key + type.FullName))
-                return null;
+        if (_cache.ContainsKey(key + type.FullName))
+            return null;
 
-            lock (_sync)
-            {
-                _cache.Add(key + type.FullName, value);
-            }
-        }
+        _cache.TryAdd(key + type.FullName, value);
 
         return value;
     }
@@ -121,16 +96,10 @@ public static class CacheStore
         Type type = typeof(T);
         T value = (T)Activator.CreateInstance(type, constructorParameters);
 
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(type.FullName))
-                return null;
+        if (_cache.ContainsKey(type.FullName))
+            return null;
 
-            lock (_sync)
-            {
-                _cache.Add(type.FullName, value);
-            }
-        }
+        _cache.TryAdd(type.FullName, value);
 
         return value;
     }
@@ -139,16 +108,10 @@ public static class CacheStore
     {
         Type type = typeof(T);
 
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(key + type.FullName))
-                return;
+        if (_cache.ContainsKey(key + type.FullName))
+            return;
 
-            lock (_sync)
-            {
-                _cache.Add(key + type.FullName, value);
-            }
-        }
+        _cache.TryAdd(key + type.FullName, value);
     }
 
     /// <summary>
@@ -159,16 +122,10 @@ public static class CacheStore
     {
         Type type = typeof(T);
 
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(type.FullName) == false)
-                return;
-
-            lock (_sync)
-            {
-                _cache.Remove(type.FullName);
-            }
-        }
+        if (_cache.ContainsKey(type.FullName) == false)
+            return;
+            
+		_cache.TryRemove(type.FullName, out object _);
     }
 
     /// <summary>
@@ -180,15 +137,9 @@ public static class CacheStore
     {
         Type type = typeof(T);
 
-        lock (_sync)
-        {
-            if (_cache.ContainsKey(key + type.FullName) == false)
-                return;
+        if (_cache.ContainsKey(key + type.FullName) == false)
+            return;
 
-            lock (_sync)
-            {
-                _cache.Remove(key + type.FullName);
-            }
-        }
+        _cache.TryRemove(key + type.FullName, out object _);
     }
 }
