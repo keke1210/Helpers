@@ -143,3 +143,32 @@ public static class CacheStore
         _cache.TryRemove(key + type.FullName, out object _);
     }
 }
+
+
+public class Program 
+{
+    public static void Main()
+    {
+        var person = new Person("Skerdi");
+
+        var anotherPerson = CacheStore.Create<Person>("key2", "Altjen");
+
+        CacheStore.Add<Person>("key1", person);
+
+        var obj = CacheStore.Get<Person>("key1");
+        var obj2 = CacheStore.Get<Person>("key2");
+
+        Console.WriteLine(obj.Name);
+        Console.WriteLine(obj2.Name);
+    }
+    public class Person 
+    {
+        public Person() {}
+
+        public Person(string name){
+            Name = name;
+        }
+
+        public string Name;
+    }
+}
