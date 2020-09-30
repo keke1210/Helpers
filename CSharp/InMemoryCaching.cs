@@ -150,16 +150,18 @@ public class Program
     public static void Main()
     {
         var person = new Person("Skerdi");
-
-        var anotherPerson = CacheStore.Create<Person>("key2", "Altjen");
-
         CacheStore.Add<Person>("key1", person);
-
         var obj = CacheStore.Get<Person>("key1");
+        
+        var anotherPerson = CacheStore.Create<Person>("key2", "Altjen");
         var obj2 = CacheStore.Get<Person>("key2");
-
-        Console.WriteLine(obj.Name);
-        Console.WriteLine(obj2.Name);
+        
+        CacheStore.Remove<Person>("key1");
+        var skerdiExists = CacheStore.Exists<Person>("key1");
+        
+        Console.WriteLine(skerdiExists);
+        Console.WriteLine(obj?.Name);
+        Console.WriteLine(obj2?.Name);
     }
     public class Person 
     {
