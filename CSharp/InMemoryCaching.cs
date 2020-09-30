@@ -147,7 +147,7 @@ public static class CacheStore
 
 public class Program 
 {
-    public static void Main()
+    void Main()
     {
         var person = new Person("Skerdi");
         CacheStore.Add<Person>("key1", person);

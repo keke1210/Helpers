@@ -10,7 +10,7 @@ using System.Web;
 */
 public static class CacheHelper
 {
-    public static void SaveTocache(string cacheKey, int cacheTimeInHours, object savedItem)
+    public static void SaveToCache(string cacheKey, int cacheTimeInHours, object savedItem)
     {
         if (IsIncache(cacheKey))
         {
