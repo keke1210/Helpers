@@ -19,7 +19,7 @@ public static class ValidationExtensions
     /// <param name="guid"></param>
     /// <returns></returns>
     public static bool IsEmptyGuidOrNull(this Guid guid)
-                        => guid != null && guid != Guid.Empty;
+                        => guid == null && guid == Guid.Empty;
 
     /// <summary>
     /// Checks if string can be parsed to guid and is valid
@@ -29,8 +29,16 @@ public static class ValidationExtensions
     public static bool IsStringEmptyGuidOrNull(this string guidStr)
     {
         var guidValue = new Guid(guidStr);
-        return !guidStr.IsEmptyWhitespaceOrNull() && guidValue != Guid.Empty;
+        return guidStr.IsEmptyWhitespaceOrNull() && guidValue == Guid.Empty;
     }
+
+    /// <summary>
+    /// Checks if the datetime is null or default (empty: 1/1/0001 ...);
+    /// </summary>
+    /// <param name="date">DateTime</param>
+    /// <returns>true if the date is empty</returns>
+    public static bool IsEmptyDate(this DateTime date) 
+						=> date == default(DateTime) || date == null;
 
     /// <summary>
     /// Returs true if string is whitespace, null or empty
