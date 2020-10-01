@@ -38,7 +38,7 @@ public static class ValidationExtensions
     /// <param name="date">DateTime</param>
     /// <returns>true if the date is empty</returns>
     public static bool IsEmptyDate(this DateTime date) 
-						=> date == default(DateTime) || date == null;
+						=> date == null || date == default(DateTime);
 
     /// <summary>
     /// Returs true if string is whitespace, null or empty
