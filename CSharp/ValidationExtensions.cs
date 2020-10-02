@@ -37,8 +37,8 @@ public static class ValidationExtensions
     /// </summary>
     /// <param name="date">DateTime</param>
     /// <returns>true if the date is empty</returns>
-    public static bool IsEmptyDate(this DateTime date) 
-						=> date == null || date == default(DateTime);
+    public static bool IsEmptyDate(this DateTime date)
+                        => date == null || date == default(DateTime);
 
     /// <summary>
     /// Returs true if string is whitespace, null or empty
@@ -79,6 +79,20 @@ public static class ValidationExtensions
         if (regInvalidFileName.IsMatch(fileName)) { return false; };
 
         return true;
+    }
+
+    /// <summary>
+    /// Checks if URL is valid
+    /// </summary>
+    /// <param name="uriName"></param>
+    /// <returns></returns>
+    public static bool IsValidUrl(this string uriName)
+    {
+        Uri uriResult;
+        bool result = Uri.TryCreate(uriName, UriKind.Absolute, out uriResult)
+            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        return result;
     }
 
     /// <summary>
