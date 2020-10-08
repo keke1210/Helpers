@@ -48,13 +48,17 @@ public static class ValidationExtensions
     public static bool IsEmptyWhitespaceOrNull(this string str)
                         => string.IsNullOrWhiteSpace(str) || string.Empty == str;
 
+    
     /// <summary>
-    /// Better way to check if the given guid is valid, only .NET Core
+    /// Better way to check if the string is valid guid, only .NET Core
     /// </summary>
-    /// <param name="guid"></param>
+    /// <param name="inputString"></param>
     /// <returns></returns>
-    public static bool IsValidGuid(this Guid guid)
-                        => Guid.TryParse(guid.ToString(), out Guid _);
+    public static bool IsValidGuid(this string inputString)
+    {
+        Guid.TryParse(inputString, out var guidOutput);
+        return guidOutput != Guid.Empty;
+    }
 
     /// <summary>
     /// Better way to check if the given string can be parsed to Guid, only .NET Core

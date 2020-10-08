@@ -52,4 +52,14 @@ public static class ExtensionParsers
             return default(DateTime);
         }
     }
+
+    /// <summary>
+    /// Parse from string to Guid
+    /// </summary>
+    /// <param name="dateAsNumber"></param>
+    /// <returns>parsed value</returns>
+    public static Guid ToValidGuid(this string inputString)
+    {
+        return IsValidGuid(inputString) ? new Guid(inputString) : new Guid();
+    }
 }
