@@ -99,6 +99,27 @@ public static class ValidationExtensions
         return result;
     }
 
+        public static bool IsLocalPath(this string path)
+        {
+            bool ret = true;
+            try
+            {
+                ret = new Uri(path).IsFile;
+            }
+            catch
+            {
+                if (path.StartsWith("http://") ||
+                    path.StartsWith(@"http:\\") ||
+                    path.StartsWith("https://") ||
+                    path.StartsWith(@"https:\\"))
+                {
+                    return false;
+                }
+            }
+
+            return ret;
+        }
+
     /// <summary>
     /// Checks if T is Serializable
     /// </summary>

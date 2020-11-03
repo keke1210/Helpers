@@ -1,0 +1,2 @@
+Publish .net core console app to single executable... =
+dotnet publish -c Release -r win10-x64 -p:PublishSingleFile=true

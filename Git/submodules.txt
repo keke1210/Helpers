@@ -1,0 +1,14 @@
+first you add a .gitmodules file like example below : 
+
+[submodule "OpenAPI.NET.OData"] 
+  path = OpenAPI.NET.OData 
+  url = https://github.com/microsoft/OpenAPI.NET.OData.git
+
+  then command: git submodule init
+  and then      git submodule update 
+
+  to clone the referenced project.
+
+
+  you can clone a repo with submodules like : 
+  git clone --recurse-submodules https://evald80@bitbucket.org/sberberi/openapiforodata.git
