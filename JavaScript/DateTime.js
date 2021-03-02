@@ -33,3 +33,17 @@ function formatDate(date) {
     return new Date();
 }
 
+
+// Format string yyyy-MM-ddTHH:mm:ss to dd/MM/yyyy
+function formateStringDate(strdatetime) {
+    if (!isEmptyNullOrSpaces(date)) {
+        let strdate = strdatetime.slice(0, 10);
+        let day = strdate.slice(8, 10);
+        let month = strdate.slice(5, 7);
+        let year = strdate.slice(0, 4);
+
+        return day + "/" + month + "/" + year;
+    }
+
+    return "01/01/0001";
+}
